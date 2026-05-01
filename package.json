@@ -22,6 +22,7 @@
     "build": "npm run generate && tree-sitter build --wasm",
     "build:debug": "tree-sitter build --wasm --debug",
     "test": "tree-sitter test",
+    "test:deno": "deno run --allow-read ./examples/deno.ts",
     "generate": "tree-sitter generate"
   },
   "tree-sitter": [

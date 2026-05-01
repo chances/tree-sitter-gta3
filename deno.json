@@ -1,0 +1,9 @@
+{
+  "tasks": {
+    "test": "deno run --allow-read ./examples/deno.ts"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1",
+    "deno_tree_sitter/": "https://deno.land/x/deno_tree_sitter@1.0.1.2/"
+  }
+}

@@ -4,7 +4,7 @@
  * Run with: deno run --allow-read deno_example.ts
  */
 
-import { createParser } from "https://deno.land/x/deno_tree_sitter@1.0.1.2/main/main.js";
+import { createParser } from "deno_tree_sitter/main/main.js";
 
 // Path to the compiled WASM grammar
 const WASM_PATH = "./tree-sitter-gta3.wasm";
