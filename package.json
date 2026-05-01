@@ -19,7 +19,9 @@
     "tree-sitter-cli": "^0.26.8"
   },
   "scripts": {
-    "build": "npm run generate && tree-sitter build --wasm",
+    "build": "npm run generate && npm run build:full",
+    "build:full": "tree-sitter build",
+    "build:wasm": "tree-sitter build --wasm",
     "build:debug": "tree-sitter build --wasm --debug",
     "test": "tree-sitter test",
     "test:deno": "deno run --allow-read ./examples/deno.ts",
