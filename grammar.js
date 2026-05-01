@@ -1,5 +1,11 @@
-module.exports = grammar({
+export default grammar({
   name: "gta3",
+
+  conflicts: ($) => [
+    [$.define_objects, $.define_objects],
+    [$.define_missions, $.define_missions],
+    [$.function_call, $.expression],
+  ],
 
   rules: {
     source_file: ($) =>
@@ -112,7 +118,6 @@ module.exports = grammar({
         $.const_declaration,
         $.alloc_statement,
         $.label,
-        $.label_definition,
         $.function_def,
         $.while_loop,
         $.repeat_loop,
@@ -127,19 +132,10 @@ module.exports = grammar({
         $.terminate_script,
         $.function_call,
         $.assignment,
-        $.comment,
-        $.block_comment,
       ),
 
     // ==================== Control Flow ====================
     label: ($) => seq(":", $.identifier),
-
-    label_definition: ($) =>
-      seq(
-        ":",
-        $.identifier,
-        repeat(choice($.statement, $.comment, $.block_comment)),
-      ),
 
     label_ref: ($) => seq("@", $.identifier),
 
@@ -166,14 +162,14 @@ module.exports = grammar({
       seq(
         "while",
         $.condition,
-        repeat(choice($.statement, $.comment, $.block_comment)),
+        repeat($.statement),
         "end",
       ),
 
     repeat_loop: ($) =>
       seq(
         "repeat",
-        repeat(choice($.statement, $.comment, $.block_comment)),
+        repeat($.statement),
         "until",
         $.condition,
       ),
@@ -214,9 +210,9 @@ module.exports = grammar({
           $.condition,
         ),
         "then",
-        repeat(choice($.statement, $.comment, $.block_comment)),
+        repeat($.statement),
         optional(
-          seq("else", repeat(choice($.statement, $.comment, $.block_comment))),
+          seq("else", repeat($.statement)),
         ),
         "end",
       ),
@@ -229,7 +225,7 @@ module.exports = grammar({
         "(",
         optional($.parameter_list),
         ")",
-        repeat(choice($.statement, $.comment, $.block_comment)),
+        repeat($.statement),
         "end",
       ),
 
@@ -250,7 +246,7 @@ module.exports = grammar({
     qualified_name: ($) =>
       seq(
         $.identifier,
-        repeat(seq(".", $.identifier)),
+        repeat1(seq(".", $.identifier)),
       ),
 
     argument_list: ($) =>
@@ -269,11 +265,11 @@ module.exports = grammar({
         $.identifier,
         $.constant,
         seq("(", $.expression, ")"),
-        seq(
+        prec.left(1, seq(
           $.expression,
           choice("+", "-", "*", "/", "%", "&", "|"),
           $.expression,
-        ),
+        )),
       ),
 
     // ==================== Variables & Values ====================

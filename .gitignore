@@ -1,0 +1,13 @@
+# Node
+node_modules/
+
+# Artifacts
+build/
+*.wasm
+*.so
+*.so.*
+*.dll
+*.dylib
+*.a
+*.o
+*.obj

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
+  "grammars": [
+    {
+      "name": "tree_sitter_gta_sbl",
+      "camelcase": "GrandTheftAutoSannyBuilderLang",
+      "title": "GTA Sanny Builder Languange (SBL)",
+      "scope": "source.gta_sbl",
+      "file-types": [
+        "sbl",
+        "txt"
+      ],
+      "injection-regex": "^tree_sitter_gta_sbl$",
+      "class-name": "TreeSitterTreeSitterGtaSbl"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Sanny Builder scripts for Grand Theft Auto 3D games (GTA3, VC, SA, LCS, and VCS)",
+    "authors": [
+      {
+        "name": "Chance Snow",
+        "email": "git@chancesnow.me",
+        "url": "https://chancesnow.me"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/chances/tree-sitter-gta3"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": false,
+    "java": false,
+    "node": true,
+    "python": false,
+    "rust": true,
+    "swift": false,
+    "zig": false
+  }
+}
