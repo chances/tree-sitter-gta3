@@ -1,0 +1,35 @@
+{
+  "name": "tree-sitter-gta3",
+  "version": "1.0.0",
+  "description": "Tree-sitter grammar for GTA3 Sanny Builder scripts (WebAssembly)",
+  "main": "index.js",
+  "keywords": [
+    "gta3",
+    "sanny-builder",
+    "tree-sitter",
+    "parser",
+    "grammar",
+    "wasm",
+    "webassembly"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "tree-sitter-cli": "^0.20.0"
+  },
+  "scripts": {
+    "build": "tree-sitter build --wasm",
+    "test": "tree-sitter test",
+    "generate": "tree-sitter generate"
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.gta3",
+      "path": ".",
+      "file-types": [
+        "txt"
+      ]
+    }
+  ]
+}

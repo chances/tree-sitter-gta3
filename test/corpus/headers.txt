@@ -1,0 +1,70 @@
+=====================================
+Define Objects
+=====================================
+
+DEFINE OBJECTS 2
+DEFINE OBJECT SANNY BUILDER 4.1.0
+DEFINE OBJECT LOD_LAND014
+
+---
+
+(source_file
+  (header_directive
+    (define_objects
+      (integer)
+      (object_definition
+        (identifier)
+        (identifier)
+        (identifier))
+      (object_definition
+        (identifier)))))
+
+=====================================
+Define Missions
+=====================================
+
+DEFINE MISSIONS 2
+DEFINE MISSION 0 AT @Tutorial
+DEFINE MISSION 1 AT @Car
+
+---
+
+(source_file
+  (header_directive
+    (define_missions
+      (integer)
+      (mission_definition
+        (integer)
+        (label_ref)
+        (identifier))
+      (mission_definition
+        (integer)
+        (label_ref)
+        (identifier)))))
+
+=====================================
+CLEO Directive
+=====================================
+
+{$USE CLEO}
+
+---
+
+(source_file
+  (header_directive
+    (cleo_directive)))
+
+=====================================
+Include Directive
+=====================================
+
+{$INCLUDE globals.txt}
+{$INCLUDE utils/functions.txt}
+
+---
+
+(source_file
+  (include_directive
+    (string))
+  (include_directive
+    (string)))

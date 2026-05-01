@@ -1,0 +1,90 @@
+=====================================
+Simple If Statement
+=====================================
+
+if true then
+  wait 0
+end
+
+---
+
+(source_file
+  (if_statement
+    (condition)
+    (wait_statement
+      (integer))))
+
+=====================================
+If Else
+=====================================
+
+if $x == 5 then
+  wait 0
+else
+  wait 250 ms
+end
+
+---
+
+(source_file
+  (if_statement
+    (condition
+      (comparison
+        (global_var)
+        (integer)))
+    (wait_statement
+      (integer))
+    (wait_statement
+      (integer))))
+
+=====================================
+If And Condition
+=====================================
+
+if and
+  Player.IsPlaying($player)
+  $onMission == False
+then
+  wait 0
+end
+
+---
+
+(source_file
+  (if_statement
+    (condition
+      (function_call
+        (qualified_name)
+        (argument_list
+          (global_var))))
+    (condition
+      (comparison
+        (global_var)))))
+    (wait_statement
+      (integer))))
+
+=====================================
+If Or Condition
+=====================================
+
+if or
+  $x == 1
+  $x == 2
+then
+  wait 0
+end
+
+---
+
+(source_file
+  (if_statement
+    (condition
+      (comparison
+        (global_var)
+        (integer)))
+    (condition
+      (comparison
+        (global_var)
+        (integer))))
+    (wait_statement
+      (integer))))

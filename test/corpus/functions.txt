@@ -1,0 +1,63 @@
+=====================================
+Function Definition
+=====================================
+
+function initBlips()
+  $SafeBlip = Blip.AddSpriteForCoord(625.8125, 1395.0625, 140.625)
+end
+
+---
+
+(source_file
+  (function_def
+    (identifier)
+    (assignment
+      (global_var)
+      (function_call
+        (qualified_name)
+        (argument_list
+          (number
+            (float))
+          (number
+            (float))
+          (number
+            (float)))))))
+
+=====================================
+Function Call
+=====================================
+
+initBlips()
+Player.SetCoordinates($player, 1023.36, -651.512)
+
+---
+
+(source_file
+  (function_call
+    (identifier))
+  (function_call
+    (qualified_name)
+    (argument_list
+      (global_var)
+      (number
+        (float))
+      (number
+        (float)))))
+
+=====================================
+Function with Parameters
+=====================================
+
+function add(a, b)
+  return
+end
+
+---
+
+(source_file
+  (function_def
+    (identifier)
+    (parameter_list
+      (identifier)
+      (identifier))
+    (return_statement)))

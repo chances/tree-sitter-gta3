@@ -1,0 +1,50 @@
+=====================================
+Variable Block
+=====================================
+
+var
+  $player: Player
+  $missionIndex: int
+end
+
+---
+
+(source_file
+  (var_block
+    (var_declaration
+      (global_var)
+      (type_name))
+    (var_declaration
+      (global_var)
+      (type_name))))
+
+=====================================
+Const Declaration
+=====================================
+
+const START_MISSION_INDEX = 0
+
+---
+
+(source_file
+  (const_declaration
+    (identifier)
+    (number
+      (integer))))
+
+=====================================
+Alloc Statement
+=====================================
+
+Alloc($TIMER, 4310)
+Alloc($Banshee, 4315)
+
+---
+
+(source_file
+  (alloc_statement
+    (global_var)
+    (integer))
+  (alloc_statement
+    (global_var)
+    (integer)))
