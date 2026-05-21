@@ -1,0 +1,12 @@
+id = "gta-sbl"
+name = "GTA Sanny Builder Language"
+version = "0.1.0"
+schema_version = 1
+authors = ["Chance Snow <git@chancesnow.me>"]
+description = "Sanny Builder scripts for Grand Theft Auto 3D games (GTA3, VC, SA, LCS, and VCS)"
+repository = "https://github.com/chances/tree-sitter-gta3"
+
+[grammars.gta]
+# For local dev you can swap this for a file:// URL pointing at the repo root.
+repository = "https://github.com/chances/tree-sitter-gta3"
+rev = "e97f77314cc59e9a4c694f10f6c4a47f1be97e81"

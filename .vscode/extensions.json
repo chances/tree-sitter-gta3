@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "tamasfe.even-better-toml",
+        "ms-vscode.makefile-tools",
+        "rust-lang.rust-analyzer"
+    ]
+}
