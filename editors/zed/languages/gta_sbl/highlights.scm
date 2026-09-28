@@ -34,34 +34,29 @@
 (parameter_list (identifier) @variable.parameter)
 
 ; ==================== Keywords ====================
-; Header directives
-["DEFINE" "OBJECTS" "OBJECT" "MISSIONS" "MISSION" "AT"] @keyword
-["$USE" "$INCLUDE" "CLEO"] @preproc
-
-; Declarations
-["var" "const" "end"] @keyword
-
-; Control flow
-["goto" "gosub" "return" "break" "continue"] @keyword
-"terminate_this_script" @keyword
-"declare_mission_flag" @keyword
-"script_name" @keyword
-"Alloc" @keyword
-
-; Functions
-"function" @keyword
-
-; Loops
-["while" "repeat" "until"] @keyword
-
-; Conditionals
-["if" "then" "else"] @keyword
-
-; Boolean logic — these act as operators in conditions
-["and" "or" "not"] @keyword.operator
-
-; Boolean literals
-["true" "false"] @boolean
+; Highlight named grammar rules rather than raw keyword literals. The grammar
+; does not expose every keyword as an anonymous node type to Zed's query API.
+(define_objects) @keyword
+(define_missions) @keyword
+(cleo_directive) @preproc
+(include_directive) @preproc
+(var_block) @keyword
+(const_declaration) @keyword
+(alloc_statement) @keyword
+(goto_statement) @keyword
+(gosub_statement) @keyword
+(return_statement) @keyword
+(break_statement) @keyword
+(continue_statement) @keyword
+(terminate_script) @keyword
+(declare_mission_flag) @keyword
+(script_name_statement) @keyword
+(function_def) @keyword
+(while_loop) @keyword
+(repeat_loop) @keyword
+(if_statement) @keyword
+(logical_expr) @keyword.operator
+(negation) @keyword.operator
 
 ; ==================== Operators ====================
 ["==" "!=" "<" ">" "<=" ">="] @operator

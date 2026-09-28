@@ -9,4 +9,4 @@ repository = "https://github.com/chances/tree-sitter-gta3"
 [grammars.sbl]
 # For local dev you can swap this for a file:// URL pointing at the repo root.
 repository = "https://github.com/chances/tree-sitter-gta3"
-rev = "0082b2012c7fbcb61cb2f726e16f0a5996bf64cf"
+rev = "6702fb26512880a9ef189f5391caa680265bda92"
