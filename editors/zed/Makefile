@@ -7,4 +7,8 @@ validate:
 	@test -f extension.toml
 	@test -d languages
 	@echo "Validated Zed extension sources."
-	@echo "Build/package this extension with Zed or the Zed extension publishing infrastructure."
+	@echo "Build/package this extension with Zed."
+
+.PHONY: clean
+clean:
+	cargo clean

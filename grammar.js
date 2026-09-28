@@ -1,5 +1,5 @@
 export default grammar({
-  name: "gta3",
+  name: "sbl",
 
   conflicts: ($) => [
     [$.define_objects, $.define_objects],

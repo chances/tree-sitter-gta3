@@ -1,5 +1,5 @@
-#ifndef TREE_SITTER_TREE_SITTER_GTA_SBL_H_
-#define TREE_SITTER_TREE_SITTER_GTA_SBL_H_
+#ifndef TREE_SITTER_TREE_SITTER_SBL_H_
+#define TREE_SITTER_TREE_SITTER_SBL_H_
 
 typedef struct TSLanguage TSLanguage;
 
@@ -13,4 +13,4 @@ const TSLanguage *tree_sitter_tree_sitter_gta_sbl(void);
 }
 #endif
 
-#endif // TREE_SITTER_TREE_SITTER_GTA_SBL_H_
+#endif // TREE_SITTER_TREE_SITTER_SBL_H_

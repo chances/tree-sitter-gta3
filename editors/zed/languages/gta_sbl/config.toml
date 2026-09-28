@@ -1,6 +1,7 @@
 name = "GTA Sanny Builder Language"
-grammar = "gta3"
-# .sbl is the canonical extension; .txt is used by some GTA script editors.
+grammar = "sbl"
+# .sbl is the canonical extension
+# .txt is used by some GTA script editors.
 path_suffixes = ["sbl", "txt"]
 line_comments = ["// "]
 tab_size = 4

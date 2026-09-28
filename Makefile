@@ -1,4 +1,4 @@
-LANGUAGE_NAME := tree-sitter-tree-sitter-gta-sbl
+ME := tree-sitter-gta-sbl
 HOMEPAGE_URL := https://github.com/chances/tree-sitter-gta3
 VERSION := 0.1.0
 

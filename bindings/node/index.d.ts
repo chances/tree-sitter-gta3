@@ -25,7 +25,7 @@ type NodeInfo =
  *
  * @example
  * import Parser from "tree-sitter";
- * import GrandTheftAutoSannyBuilderLang from "tree-sitter-tree-sitter-gta-sbl";
+ * import GrandTheftAutoSannyBuilderLang from "tree-sitter-gta-sbl";
  *
  * const parser = new Parser();
  * parser.setLanguage(GrandTheftAutoSannyBuilderLang);
