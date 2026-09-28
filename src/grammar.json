@@ -75,8 +75,16 @@
           "value": "OBJECT"
         },
         {
-          "type": "SYMBOL",
-          "name": "identifier"
+          "type": "REPEAT1",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "PATTERN",
+              "value": "[a-zA-Z0-9_.]+"
+            },
+            "named": true,
+            "value": "identifier"
+          }
         },
         {
           "type": "CHOICE",
@@ -216,8 +224,22 @@
           "value": "$INCLUDE"
         },
         {
-          "type": "SYMBOL",
-          "name": "string"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "string"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "[a-zA-Z0-9_./-]+"
+              },
+              "named": true,
+              "value": "string"
+            }
+          ]
         },
         {
           "type": "STRING",
@@ -304,7 +326,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "expression"
+          "name": "number"
         }
       ]
     },
@@ -394,6 +416,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "wait_statement"
+        },
+        {
+          "type": "SYMBOL",
           "name": "declare_mission_flag"
         },
         {
@@ -435,8 +461,8 @@
           "value": "@"
         },
         {
-          "type": "SYMBOL",
-          "name": "identifier"
+          "type": "PATTERN",
+          "value": "[a-zA-Z_]\\w*"
         }
       ]
     },
@@ -630,7 +656,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "expression"
+          "name": "_scalar"
         },
         {
           "type": "CHOICE",
@@ -663,7 +689,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "expression"
+          "name": "_scalar"
         }
       ]
     },
@@ -685,7 +711,7 @@
                   "value": "and"
                 },
                 {
-                  "type": "REPEAT",
+                  "type": "REPEAT1",
                   "content": {
                     "type": "SYMBOL",
                     "name": "condition"
@@ -701,7 +727,7 @@
                   "value": "or"
                 },
                 {
-                  "type": "REPEAT",
+                  "type": "REPEAT1",
                   "content": {
                     "type": "SYMBOL",
                     "name": "condition"
@@ -864,36 +890,15 @@
       ]
     },
     "qualified_name": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "identifier"
-        },
-        {
-          "type": "REPEAT1",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "."
-              },
-              {
-                "type": "SYMBOL",
-                "name": "identifier"
-              }
-            ]
-          }
-        }
-      ]
+      "type": "PATTERN",
+      "value": "[a-zA-Z_]\\w*(\\.[a-zA-Z_]\\w*)+"
     },
     "argument_list": {
       "type": "SEQ",
       "members": [
         {
           "type": "SYMBOL",
-          "name": "expression"
+          "name": "_value"
         },
         {
           "type": "REPEAT",
@@ -906,14 +911,47 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "expression"
+                "name": "_value"
               }
             ]
           }
         }
       ]
     },
-    "expression": {
+    "_scalar": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "function_call"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "integer"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "float"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "string"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_variable"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "constant"
+        }
+      ]
+    },
+    "_value": {
       "type": "CHOICE",
       "members": [
         {
@@ -939,6 +977,15 @@
         {
           "type": "SYMBOL",
           "name": "constant"
+        }
+      ]
+    },
+    "expression": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_value"
         },
         {
           "type": "SEQ",
@@ -1090,7 +1137,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "expression"
+          "name": "_value"
         }
       ]
     },
@@ -1319,7 +1366,9 @@
   ],
   "precedences": [],
   "externals": [],
-  "inline": [],
+  "inline": [
+    "statement"
+  ],
   "supertypes": [],
   "reserved": {}
 }

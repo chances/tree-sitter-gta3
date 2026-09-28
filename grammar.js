@@ -1,5 +1,9 @@
+/** See https://library.sannybuilder.com */
+// deno-lint-ignore-file no-unused-vars
 export default grammar({
   name: "sbl",
+
+  inline: ($) => [$.statement],
 
   conflicts: ($) => [
     [$.define_objects, $.define_objects],
@@ -9,45 +13,25 @@ export default grammar({
 
   rules: {
     source_file: ($) =>
-      repeat(
-        choice(
-          $.header_directive,
-          $.include_directive,
-          $.statement,
-        ),
-      ),
+      repeat(choice($.header_directive, $.include_directive, $.statement)),
 
     // ==================== Headers ====================
     header_directive: ($) =>
-      choice(
-        $.define_objects,
-        $.define_missions,
-        $.cleo_directive,
-      ),
+      choice($.define_objects, $.define_missions, $.cleo_directive),
 
     define_objects: ($) =>
-      seq(
-        "DEFINE",
-        "OBJECTS",
-        $.integer,
-        repeat($.object_definition),
-      ),
+      seq("DEFINE", "OBJECTS", $.integer, repeat($.object_definition)),
 
     object_definition: ($) =>
       seq(
         "DEFINE",
         "OBJECT",
-        $.identifier,
+        repeat1(alias(/[a-zA-Z0-9_.]+/, $.identifier)),
         optional(seq("//", $.comment_text)),
       ),
 
     define_missions: ($) =>
-      seq(
-        "DEFINE",
-        "MISSIONS",
-        $.integer,
-        repeat($.mission_definition),
-      ),
+      seq("DEFINE", "MISSIONS", $.integer, repeat($.mission_definition)),
 
     mission_definition: ($) =>
       seq(
@@ -60,56 +44,26 @@ export default grammar({
         optional(seq("@", "mission")),
       ),
 
-    cleo_directive: ($) =>
-      seq(
-        "{",
-        "$USE",
-        "CLEO",
-        "}",
-      ),
+    cleo_directive: ($) => seq("{", "$USE", "CLEO", "}"),
 
     // ==================== Includes ====================
     include_directive: ($) =>
       seq(
         "{",
         "$INCLUDE",
-        $.string,
+        choice($.string, alias(/[a-zA-Z0-9_./-]+/, $.string)),
         "}",
       ),
 
     // ==================== Declarations ====================
-    var_block: ($) =>
-      seq(
-        "var",
-        repeat($.var_declaration),
-        "end",
-      ),
+    var_block: ($) => seq("var", repeat($.var_declaration), "end"),
 
     var_declaration: ($) =>
-      seq(
-        $._variable,
-        ":",
-        $.type_name,
-        optional(seq("[", $.integer, "]")),
-      ),
+      seq($._variable, ":", $.type_name, optional(seq("[", $.integer, "]"))),
 
-    const_declaration: ($) =>
-      seq(
-        "const",
-        $.identifier,
-        "=",
-        $.expression,
-      ),
+    const_declaration: ($) => seq("const", $.identifier, "=", $.number),
 
-    alloc_statement: ($) =>
-      seq(
-        "Alloc",
-        "(",
-        $._variable,
-        ",",
-        $.integer,
-        ")",
-      ),
+    alloc_statement: ($) => seq("Alloc", "(", $._variable, ",", $.integer, ")"),
 
     // ==================== Statements ====================
     statement: ($) =>
@@ -127,6 +81,7 @@ export default grammar({
         $.return_statement,
         $.break_statement,
         $.continue_statement,
+        $.wait_statement,
         $.declare_mission_flag,
         $.script_name_statement,
         $.terminate_script,
@@ -137,19 +92,11 @@ export default grammar({
     // ==================== Control Flow ====================
     label: ($) => seq(":", $.identifier),
 
-    label_ref: ($) => seq("@", $.identifier),
+    label_ref: ($) => seq("@", /[a-zA-Z_]\w*/),
 
-    goto_statement: ($) =>
-      seq(
-        "goto",
-        $.label_ref,
-      ),
+    goto_statement: ($) => seq("goto", $.label_ref),
 
-    gosub_statement: ($) =>
-      seq(
-        "gosub",
-        $.label_ref,
-      ),
+    gosub_statement: ($) => seq("gosub", $.label_ref),
 
     return_statement: ($) => "return",
 
@@ -158,21 +105,10 @@ export default grammar({
     continue_statement: ($) => "continue",
 
     // ==================== Loops ====================
-    while_loop: ($) =>
-      seq(
-        "while",
-        $.condition,
-        repeat($.statement),
-        "end",
-      ),
+    while_loop: ($) => seq("while", $.condition, repeat($.statement), "end"),
 
     repeat_loop: ($) =>
-      seq(
-        "repeat",
-        repeat($.statement),
-        "until",
-        $.condition,
-      ),
+      seq("repeat", repeat($.statement), "until", $.condition),
 
     condition: ($) =>
       choice(
@@ -194,26 +130,20 @@ export default grammar({
     negation: ($) => seq("not", $.condition),
 
     comparison: ($) =>
-      seq(
-        $.expression,
-        choice("==", "!=", "<", ">", "<=", ">="),
-        $.expression,
-      ),
+      seq($._scalar, choice("==", "!=", "<", ">", "<=", ">="), $._scalar),
 
     // ==================== Conditionals ====================
     if_statement: ($) =>
       seq(
         "if",
         choice(
-          seq("and", repeat($.condition)),
-          seq("or", repeat($.condition)),
+          seq("and", repeat1($.condition)),
+          seq("or", repeat1($.condition)),
           $.condition,
         ),
         "then",
         repeat($.statement),
-        optional(
-          seq("else", repeat($.statement)),
-        ),
+        optional(seq("else", repeat($.statement))),
         "end",
       ),
 
@@ -229,11 +159,7 @@ export default grammar({
         "end",
       ),
 
-    parameter_list: ($) =>
-      seq(
-        $.identifier,
-        repeat(seq(",", $.identifier)),
-      ),
+    parameter_list: ($) => seq($.identifier, repeat(seq(",", $.identifier))),
 
     function_call: ($) =>
       seq(
@@ -243,20 +169,23 @@ export default grammar({
         ")",
       ),
 
-    qualified_name: ($) =>
-      seq(
-        $.identifier,
-        repeat1(seq(".", $.identifier)),
-      ),
+    qualified_name: ($) => /[a-zA-Z_]\w*(\.[a-zA-Z_]\w*)+/,
 
-    argument_list: ($) =>
-      seq(
-        $.expression,
-        repeat(seq(",", $.expression)),
-      ),
+    argument_list: ($) => seq($._value, repeat(seq(",", $._value))),
 
     // ==================== Expressions ====================
-    expression: ($) =>
+    _scalar: ($) =>
+      choice(
+        $.function_call,
+        $.integer,
+        $.float,
+        $.string,
+        $._variable,
+        $.identifier,
+        $.constant,
+      ),
+
+    _value: ($) =>
       choice(
         $.function_call,
         $.number,
@@ -264,62 +193,43 @@ export default grammar({
         $._variable,
         $.identifier,
         $.constant,
+      ),
+
+    expression: ($) =>
+      choice(
+        $._value,
         seq("(", $.expression, ")"),
-        prec.left(1, seq(
-          $.expression,
-          choice("+", "-", "*", "/", "%", "&", "|"),
-          $.expression,
-        )),
+        prec.left(
+          1,
+          seq(
+            $.expression,
+            choice("+", "-", "*", "/", "%", "&", "|"),
+            $.expression,
+          ),
+        ),
       ),
 
     // ==================== Variables & Values ====================
-    _variable: ($) =>
-      choice(
-        $.local_var,
-        $.global_var,
-        $.array_access,
-      ),
+    _variable: ($) => choice($.local_var, $.global_var, $.array_access),
 
     global_var: ($) => /\$[a-zA-Z_]\w*/,
 
     local_var: ($) => /\d[a-zA-Z_]\w*/,
 
     array_access: ($) =>
-      seq(
-        choice($.global_var, $.local_var),
-        "[",
-        $.expression,
-        "]",
-      ),
+      seq(choice($.global_var, $.local_var), "[", $.expression, "]"),
 
     assignment: ($) =>
-      seq(
-        choice($.global_var, $.local_var, $.array_access),
-        "=",
-        $.expression,
-      ),
+      seq(choice($.global_var, $.local_var, $.array_access), "=", $._value),
 
     // ==================== Other Statements ====================
-    declare_mission_flag: ($) =>
-      seq(
-        "declare_mission_flag",
-        $._variable,
-      ),
+    declare_mission_flag: ($) => seq("declare_mission_flag", $._variable),
 
-    script_name_statement: ($) =>
-      seq(
-        "script_name",
-        $.string,
-      ),
+    script_name_statement: ($) => seq("script_name", $.string),
 
     terminate_script: ($) => "terminate_this_script",
 
-    wait_statement: ($) =>
-      seq(
-        "wait",
-        optional($.integer),
-        optional("ms"),
-      ),
+    wait_statement: ($) => seq("wait", optional($.integer), optional("ms")),
 
     // ==================== Types & Identifiers ====================
     type_name: ($) =>
@@ -336,48 +246,23 @@ export default grammar({
 
     identifier: ($) => /[a-zA-Z_]\w*/,
 
-    constant: ($) =>
-      choice(
-        seq("#", /[A-Z_]\w*/),
-        /[A-Z][A-Z0-9_]*/,
-      ),
+    constant: ($) => choice(seq("#", /[A-Z_]\w*/), /[A-Z][A-Z0-9_]*/),
 
-    number: ($) =>
-      choice(
-        $.integer,
-        $.float,
-      ),
+    number: ($) => choice($.integer, $.float),
 
     integer: ($) => /-?\d+/,
 
     float: ($) => /-?\d+\.\d+/,
 
-    string: ($) =>
-      choice(
-        /"[^"]*"/,
-        /'[^']*'/,
-      ),
+    string: ($) => choice(/"[^"]*"/, /'[^']*'/),
 
     // ==================== Comments ====================
-    comment: ($) =>
-      seq(
-        "//",
-        /[^\n]*/,
-      ),
+    comment: ($) => seq("//", /[^\n]*/),
 
     comment_text: ($) => /[^\n]*/,
 
-    block_comment: ($) =>
-      seq(
-        "/*",
-        /[\s\S]*?/,
-        "*/",
-      ),
+    block_comment: ($) => seq("/*", /[\s\S]*?/, "*/"),
   },
 
-  extras: ($) => [
-    /\s+/,
-    $.comment,
-    $.block_comment,
-  ],
+  extras: ($) => [/\s+/, $.comment, $.block_comment],
 });

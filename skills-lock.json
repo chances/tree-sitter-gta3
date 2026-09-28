@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "tree-sitter-grammar": {
+      "source": "corruptmemory/claude-stuff",
+      "sourceType": "github",
+      "skillPath": "skills/tree-sitter-grammar/SKILL.md",
+      "computedHash": "5d8bd640d4395f3569c4f6dfc129413f70923eece18a518268998c708eadfe0f"
+    }
+  }
+}

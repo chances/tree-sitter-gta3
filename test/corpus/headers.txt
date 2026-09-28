@@ -35,12 +35,10 @@ DEFINE MISSION 1 AT @Car
       (integer)
       (mission_definition
         (integer)
-        (label_ref)
-        (identifier))
+        (label_ref))
       (mission_definition
         (integer)
-        (label_ref)
-        (identifier)))))
+        (label_ref)))))
 
 =====================================
 CLEO Directive
