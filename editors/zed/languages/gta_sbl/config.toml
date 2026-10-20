@@ -1,4 +1,4 @@
-name = "GTA Sanny Builder Language"
+name = "Sanny Builder"
 grammar = "sbl"
 # .sbl is the canonical extension
 # .txt is used by some GTA script editors.
